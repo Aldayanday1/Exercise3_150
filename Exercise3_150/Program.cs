@@ -9,9 +9,11 @@ namespace Exercise_Linked_List_A
     class Node
     {
         /*creates Nodes for the circular nexted list*/
+        public int noMhs;
         public int rollNumber;
         public string name;
         public Node next;
+        public Node prev;
     }
     class CircularList
     {
@@ -21,50 +23,60 @@ namespace Exercise_Linked_List_A
             LAST = null;
         }
 
-        public void addNote() 
+        public void addNode()
         {
             int nim;
             string nm;
-            Console.Write("\nEnter the roll number of the student : ");
+            Console.WriteLine("\nEnter the roll number of the student: ");
             nim = Convert.ToInt32(Console.ReadLine());
-            Console.Write("\nEnter the name of the Student : ");
+            Console.Write("\nEnter the name of the student: ");
             nm = Console.ReadLine();
-            Node newnode = new Node();
-            newnode.rollNumber = nim;
-            newnode.name = nm;
-            
-            if (LAST == null || nim <= LAST.rollNumber)
-            {
-                if ((LAST == null) && (nim == LAST.rollNumber))
-                {
-                    Console.WriteLine("\nDuplicate roll numbers not allowed\n");
-                    return;
+            Node newNode = new Node();
+            newNode.noMhs = nim;
+            newNode.name = nm;
 
+            //check if the list empty
+            if (LAST == null || nim <= LAST.noMhs)
+            {
+                if ((LAST != null) && (nim == LAST.noMhs))
+                {
+                    Console.WriteLine("\nDuplicate number not allowed");
+                    return;
                 }
-                newnode.next = LAST;
-                LAST = newnode;
+                newNode.next = LAST;
+                if (LAST != null)
+                    LAST.prev = newNode;
+                newNode.next = null;
+                LAST = newNode;
                 return;
             }
-
-            
+            /*if the node is to be inserted at beetwen two Node*/
             Node previous, current;
-            previous = LAST;
-            current = LAST;
-
-            while ((current != null) && (nim >= current.rollNumber)) ;
+            for (current = previous = LAST;
+                current != null && nim >= current.noMhs;
+                previous = current, current = current.next)
             {
-                if (nim == current.rollNumber)
+                if (nim == current.noMhs)
                 {
-                    Console.WriteLine("\nDuplicate roll number not allowed\n");
+                    Console.WriteLine("\nDuplicate roll numbers not allowed");
                     return;
                 }
-                previous = current;
-                current = current.next;
             }
+            /*On the execution of the above for loop, prev and 
+            * current will point to those nodes
+            * between which the new node is to be inserted */
+            newNode.next = current;
+            newNode.prev = previous;
 
-
-            newnode.next = current;
-            previous.next = newnode;
+            //if the node is to be inserted at the end of the list
+            if (current == null)
+            {
+                newNode.next = null;
+                previous.next = newNode;
+                return;
+            }
+            current.prev = newNode;
+            previous.next = newNode;
         }
         public bool Search(int rollNo, ref Node previous, ref Node current)
         /*Searches for the specified node*/
@@ -120,20 +132,26 @@ namespace Exercise_Linked_List_A
                 try
                 {
                     Console.WriteLine("\nMenu");
-                    Console.WriteLine("1. View all the records in the list");
-                    Console.WriteLine("2. Search for a record in the list");
-                    Console.WriteLine("3. Display the first record in the list");
-                    Console.WriteLine("4. Exit");
-                    Console.Write("\nEnter your choice (1-4): ");
+                    Console.WriteLine("1. Add a record to the list");
+                    Console.WriteLine("2. View all the records in the list");
+                    Console.WriteLine("3. Search for a record in the list");
+                    Console.WriteLine("4. Display the first record in the list");
+                    Console.WriteLine("5. Exit");
+                    Console.Write("\nEnter your choice (1-5): ");
                     char ch = Convert.ToChar(Console.ReadLine());
                     switch (ch)
                     {
                         case '1':
                             {
-                                obj.traverse();
+                                obj.addNode();
                             }
                             break;
                         case '2':
+                            {
+                                obj.traverse();
+                            }
+                            break;
+                        case '3':
                             {
                                 if (obj.listEmpty() == true)
                                 {
@@ -155,12 +173,12 @@ namespace Exercise_Linked_List_A
                                 }
                             }
                             break;
-                        case '3':
+                        case '4':
                             {
                                 obj.firstNode();
                             }
                             break;
-                        case '4':
+                        case '5':
                             return;
                         default:
                             {
