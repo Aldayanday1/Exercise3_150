@@ -92,6 +92,43 @@ namespace Exercise_Linked_List_A
             else
                 return (false);/*returns false if the node is not found*/
         }
+
+        public void ascending()
+        {
+            if (listEmpty())
+                Console.WriteLine("\nList is empty");
+            else
+            {
+                Console.WriteLine("\nRecord in the ascending order of" + "Roll number are:\n");
+                Node currentNode;
+                for (currentNode = LAST; currentNode != null; currentNode = currentNode.next)
+                    Console.Write(currentNode.noMhs + currentNode.name + "\n");
+            }
+        }
+
+        public void descending()
+        {
+            if (listEmpty())
+                Console.WriteLine("\nList is empty");
+            else
+            {
+                Console.WriteLine("Record in the Descending order of" + "Roll number are:\n");
+                Node currentNode;
+                //membawa currentNode ke node paling belakang
+                currentNode = LAST;
+                while (currentNode.next != null)
+                {
+                    currentNode = currentNode.next;
+                }
+
+                //membaca data dari last node ke first node
+                while (currentNode != null)
+                {
+                    Console.Write(currentNode.noMhs + " " + currentNode.name + "\n");
+                    currentNode = currentNode.prev;
+                }
+            }
+        }
         public bool listEmpty()
         {
             if (LAST == null)
