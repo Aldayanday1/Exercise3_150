@@ -20,6 +20,52 @@ namespace Exercise_Linked_List_A
         {
             LAST = null;
         }
+
+        public void addNote() 
+        {
+            int nim;
+            string nm;
+            Console.Write("\nEnter the roll number of the student : ");
+            nim = Convert.ToInt32(Console.ReadLine());
+            Console.Write("\nEnter the name of the Student : ");
+            nm = Console.ReadLine();
+            Node newnode = new Node();
+            newnode.rollNumber = nim;
+            newnode.name = nm;
+            
+            if (LAST == null || nim <= LAST.rollNumber)
+            {
+                if ((LAST == null) && (nim == LAST.rollNumber))
+                {
+                    Console.WriteLine("\nDuplicate roll numbers not allowed\n");
+                    return;
+
+                }
+                newnode.next = LAST;
+                LAST = newnode;
+                return;
+            }
+
+            
+            Node previous, current;
+            previous = LAST;
+            current = LAST;
+
+            while ((current != null) && (nim >= current.rollNumber)) ;
+            {
+                if (nim == current.rollNumber)
+                {
+                    Console.WriteLine("\nDuplicate roll number not allowed\n");
+                    return;
+                }
+                previous = current;
+                current = current.next;
+            }
+
+
+            newnode.next = current;
+            previous.next = newnode;
+        }
         public bool Search(int rollNo, ref Node previous, ref Node current)
         /*Searches for the specified node*/
         {
